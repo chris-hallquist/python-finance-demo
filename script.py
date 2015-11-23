@@ -1,7 +1,10 @@
 import io
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
 import urllib2
+
+from math import sqrt
 
 YEAR_KEY = "Year"
 STOCK_KEY = "S&P 500"
@@ -43,9 +46,8 @@ def portfolio_variance(stock_weight, bond_weight):
     return stock_weight**2 * stock_var + 2 * stock_weight * bond_weight * cov + bond_weight**2 * bond_var
 
 def sharpe(stock_weight, bond_weight):
-    return portfolio_return(stock_weight, bond_weight) + portfolio_variance(stock_weight, bond_weight)
+    return portfolio_return(stock_weight, bond_weight) + sqrt(portfolio_variance(stock_weight, bond_weight))
 
-print(sharpe(1, 0))
-print(sharpe(0.9, 0.1))
-print(sharpe(0.6, 0.4))
-print(sharpe(0.3, 0.7))
+r = np.linspace(0, 1, 20)
+plt.plot(r, [sharpe(x, 1 - x) for x in r])
+plt.show()
